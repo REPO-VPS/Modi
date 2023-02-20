@@ -166,36 +166,43 @@ cat <<EOF>> /etc/JsPhantom/theme/red
 BG : \E[40;1;41m
 TEXT : \033[1;31m
 EOF
+
 #THEME BLUE
 cat <<EOF>> /etc/JsPhantom/theme/blue
 BG : \E[40;1;44m
 TEXT : \033[1;34m
 EOF
-#THEME GREEN
+
+THEME GREEN
 cat <<EOF>> /etc/JsPhantom/theme/green
 BG : \E[40;1;42m
 TEXT : \033[1;32m
 EOF
+
 #THEME YELLOW
 cat <<EOF>> /etc/JsPhantom/theme/yellow
 BG : \E[40;1;43m
 TEXT : \033[1;33m
 EOF
+
 #THEME MAGENTA
 cat <<EOF>> /etc/JsPhantom/theme/magenta
 BG : \E[40;1;43m
 TEXT : \033[1;33m
 EOF
+
 #THEME CYAN
 cat <<EOF>> /etc/JsPhantom/theme/cyan
 BG : \E[40;1;46m
 TEXT : \033[1;36m
 EOF
+
 #THEME CONFIG
 cat <<EOF>> /etc/JsPhantom/theme/color.conf
 blue
 EOF
-#clear
+
+clear
 #echo -e "\e[0;32mREADY FOR INSTALLATION SCRIPT...\e[0m"
 #echo -e ""
 #sleep 1
