@@ -23,7 +23,7 @@ export Server_URL="raw.githubusercontent.com/Jesanne87/Modi/main"
 dateFromServer=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Date | sed -e 's/< Date: //')
 biji=`date +"%Y-%m-%d" -d "$dateFromServer"`
 #########################
-clear
+
 green='\e[0;32m'
 yell='\e[1;33m'
 tyblue='\e[1;36m'
