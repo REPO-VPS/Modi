@@ -1,50 +1,66 @@
 #!/bin/bash
-# =========================================
-# Quick Setup | Script Setup Manager
-# Edition : Stable Edition V1.0
-# Auther  : NiLphreakzz
-# (C) Copyright 2022
-# =========================================
-clear
-DEFBOLD='\e[39;1m'
-RB='\e[31;1m'
-GB='\e[32;1m'
-YB='\e[33;1m'
-BB='\e[34;1m'
-MB='\e[35;1m'
-CB='\e[35;1m'
-WB='\e[37;1m'
-red='\e[1;31m'
-green='\e[0;32m'
-purple='\e[0;35m'
-orange='\e[0;33m'
-NC='\e[0m'
-export Server_URL="raw.githubusercontent.com/Jesanne87/Modi/main"
 dateFromServer=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Date | sed -e 's/< Date: //')
 biji=`date +"%Y-%m-%d" -d "$dateFromServer"`
 #########################
-MYIP=$(wget -qO- ipv4.icanhazip.com);
-echo "Checking VPS"
+
+BURIQ () {
+    curl -sS https://raw.githubusercontent.com/annelyah23/IP/main/access > /root/tmp
+    data=( `cat /root/tmp | grep -E "^### " | awk '{print $2}'` )
+    for user in "${data[@]}"
+    do
+    exp=( `grep -E "^### $user" "/root/tmp" | awk '{print $3}'` )
+    d1=(`date -d "$exp" +%s`)
+    d2=(`date -d "$biji" +%s`)
+    exp2=$(( (d1 - d2) / 86400 ))
+    if [[ "$exp2" -le "0" ]]; then
+    echo $user > /etc/.$user.ini
+    else
+    rm -f  /etc/.$user.ini > /dev/null 2>&1
+    fi
+    done
+    rm -f  /root/tmp
+}
+
+MYIP=$(curl -sS ipv4.icanhazip.com)
+Name=$(curl -sS https://raw.githubusercontent.com/annelyah23/IP/main/access | grep $MYIP | awk '{print $2}')
+echo $Name > /usr/local/etc/.$Name.ini
+CekOne=$(cat /usr/local/etc/.$Name.ini)
+
+Bloman () {
+if [ -f "/etc/.$Name.ini" ]; then
+CekTwo=$(cat /etc/.$Name.ini)
+    if [ "$CekOne" = "$CekTwo" ]; then
+        res="Expired"
+    fi
+else
+res="Permission Accepted..."
+fi
+}
+
+PERMISSION () {
+    MYIP=$(curl -sS ipv4.icanhazip.com)
+    IZIN=$(curl -sS https://raw.githubusercontent.com/annelyah23/IP/main/access | awk '{print $4}' | grep $MYIP)
+    if [ "$MYIP" = "$IZIN" ]; then
+    Bloman
+    else
+    res="Permission Denied!"
+    fi
+    BURIQ
+}
+
 clear
 red='\e[1;31m'
 green='\e[0;32m'
 yell='\e[1;33m'
 tyblue='\e[1;36m'
-purple='\e[0;35m'
 NC='\e[0m'
 purple() { echo -e "\\033[35;1m${*}\\033[0m"; }
 tyblue() { echo -e "\\033[36;1m${*}\\033[0m"; }
 yellow() { echo -e "\\033[33;1m${*}\\033[0m"; }
 green() { echo -e "\\033[32;1m${*}\\033[0m"; }
 red() { echo -e "\\033[31;1m${*}\\033[0m"; }
-
-
-red='\e[1;31m'
-green='\e[0;32m'
-NC='\e[0m'
-green() { echo -e "\\033[32;1m${*}\\033[0m"; }
-red() { echo -e "\\033[31;1m${*}\\033[0m"; }
-
+cd /root
+#System version number
 if [ "${EUID}" -ne 0 ]; then
 		echo "You need to run this script as root"
 		exit 1
@@ -53,9 +69,24 @@ if [ "$(systemd-detect-virt)" == "openvz" ]; then
 		echo "OpenVZ is not supported"
 		exit 1
 fi
-MYIP=$(wget -qO- icanhazip.com/ip);
+
+localip=$(hostname -I | cut -d\  -f1)
+hst=( `hostname` )
+dart=$(cat /etc/hosts | grep -w `hostname` | awk '{print $2}')
+if [[ "$hst" != "$dart" ]]; then
+echo "$localip $(hostname)" >> /etc/hosts
+fi
+mkdir -p /etc/xray
+
+echo -e "[ ${tyblue}NOTES${NC} ] Before we go.. "
+sleep 1
+echo -e "[ ${tyblue}NOTES${NC} ] I need check your headers first.."
+sleep 2
+echo -e "[ ${green}INFO${NC} ] Checking headers"
+sleep 1
+
 secs_to_human() {
-    echo "Installation time : $(( ${1} / 3600 )) hours $(( (${1} / 60) % 60 )) minutes $(( ${1} % 60 )) seconds"
+    echo "Installation time : $(( ${1} / 3600 )) hours $(( (${1} / 60) % 60 )) minute's $(( ${1} % 60 )) seconds"
 }
 start=$(date +%s)
 ln -fs /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
@@ -65,94 +96,106 @@ sysctl -w net.ipv6.conf.default.disable_ipv6=1 >/dev/null 2>&1
 coreselect=''
 cat> /root/.profile << END
 # ~/.profile: executed by Bourne-compatible login shells.
+
 if [ "$BASH" ]; then
   if [ -f ~/.bashrc ]; then
     . ~/.bashrc
   fi
 fi
+
 mesg n || true
 clear
 END
 chmod 644 /root/.profile
 
-echo -e "[ ${green}INFO${NC} ] Preparing the autoscript installation ~"
+echo -e "[ ${green}INFO${NC} ] Preparing the install file"
 apt install git curl -y >/dev/null 2>&1
-echo -e "[ ${green}INFO${NC} ] Installation file is ready to begin !"
-sleep 1
+echo -e "[ ${green}INFO${NC} ] Alright good ... installation file is ready"
+sleep 2
+echo -ne "[ ${green}INFO${NC} ] Check permission : "
 
-if [ -f "/usr/local/etc/xray/domain" ]; then
-echo "Script Already Installed"
+PERMISSION
+if [ -f /home/needupdate ]; then
+red "Your script need to update first !"
+exit 0
+elif [ "$res" = "Permission Accepted..." ]; then
+green "Permission Accepted!"
+else
+red "Permission Denied!"
+rm setup.sh > /dev/null 2>&1
+sleep 10
 exit 0
 fi
+sleep 3
 
-mkdir -p /etc/JsPhantom
-mkdir -p /etc/JsPhantom/theme
-mkdir /var/lib/premium-script;
-mkdir /var/lib/crot-script;
-clear
-#echo -e "${red}♦️${NC} ${green}Established By NiLphreakzz 2022${NC} ${red}♦️${NC}"
-#DOWNLOAD SOURCE SCRIPT
-echo -e "${red}    ♦️${NC} ${green} CUSTOM SETUP DOMAIN VPS     ${NC}"
-echo -e "${red}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m${NC}"
-echo "1. Use Domain From Script / Gunakan Domain Dari Script"
-echo "2. Choose Your Own Domain / Pilih Domain Sendiri"
-echo -e "${red}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m${NC}"
-read -rp "Choose Your Domain Installation : " dom 
+mkdir -p /etc/anggun
+mkdir -p /etc/anggun/theme
+mkdir -p /var/lib/premium-script;
+echo "IP=" >> /var/lib/crot-script/ipvps.conf;
 
-if test $dom -eq 1; then
+if [ -f "/etc/xray/domain" ]; then
+echo ""
+echo -e "[ ${green}INFO${NC} ] Script Already Installed"
+echo -ne "[ ${yell}WARNING${NC} ] Do you want to install again ? (y/n)? "
+read answer
+if [ "$answer" == "${answer#[Yy]}" ] ;then
+rm setup.sh
+sleep 10
+exit 0
+else
 clear
-wget -q -O /root/cf.sh "https://${Server_URL}/cf.sh"
-chmod +x /root/cf.sh
-./cf.sh
-elif test $dom -eq 2; then
-read -rp "Enter Your Domain : " domen 
-echo $domen > /root/domain
-else 
-echo "Not Found Argument"
-exit 1
 fi
-echo -e "${GREEN}Done!${NC}"
-sleep 2
-clear
-echo "IP=$host" >> /var/lib/premium-script/ipvps.conf
-echo "IP=$host" >> /var/lib/crot-script/ipvps.conf
-echo "$host" >> /root/domain
+fi
 
-THEME RED
-cat <<EOF>> /etc/JsPhantom/theme/red
+echo ""
+wget -q https://raw.githubusercontent.com/annelyah23/snip/main/dependencies.sh;chmod +x dependencies.sh;./dependencies.sh
+rm dependencies.sh
+clear
+
+yellow "Add Domain for vmess/vless/trojan dll"
+echo " "
+read -rp "Input ur domain : " -e pp
+echo "$pp" > /root/domain
+echo "$pp" > /root/scdomain
+echo "$pp" > /etc/xray/domain
+echo "$pp" > /etc/xray/scdomain
+echo "IP=$pp" > /var/lib/crot-script/ipvps.conf
+
+#THEME RED
+cat <<EOF>> /etc/anggun/theme/red
 BG : \E[40;1;41m
 TEXT : \033[1;31m
 EOF
 #THEME BLUE
-cat <<EOF>> /etc/JsPhantom/theme/blue
+cat <<EOF>> /etc/anggun/theme/blue
 BG : \E[40;1;44m
 TEXT : \033[1;34m
 EOF
 #THEME GREEN
-cat <<EOF>> /etc/JsPhantom/theme/green
+cat <<EOF>> /etc/anggun/theme/green
 BG : \E[40;1;42m
 TEXT : \033[1;32m
 EOF
 #THEME YELLOW
-cat <<EOF>> /etc/JsPhantom/theme/yellow
+cat <<EOF>> /etc/anggun/theme/yellow
 BG : \E[40;1;43m
 TEXT : \033[1;33m
 EOF
 #THEME MAGENTA
-cat <<EOF>> /etc/JsPhantom/theme/magenta
+cat <<EOF>> /etc/anggun/theme/magenta
 BG : \E[40;1;43m
 TEXT : \033[1;33m
 EOF
 #THEME CYAN
-cat <<EOF>> /etc/JsPhantom/theme/cyan
+cat <<EOF>> /etc/anggun/theme/cyan
 BG : \E[40;1;46m
 TEXT : \033[1;36m
 EOF
 #THEME CONFIG
-cat <<EOF>> /etc/JsPhantom/theme/color.conf
+cat <<EOF>> /etc/anggun/theme/color.conf
 blue
 EOF
-
+    
 #clear
 #echo -e "\e[0;32mREADY FOR INSTALLATION SCRIPT...\e[0m"
 #echo -e ""
@@ -182,69 +225,97 @@ sleep 2
 clear
 
 #rm -rf /usr/share/nginx/html/index.html
-#wget -q -O /usr/share/nginx/html/index.html "https://raw.githubusercontent.com/Jesanne87/Modi/index.html"
+#wget -q -O /usr/share/nginx/html/index.html "https://raw.githubusercontent.com/annelyah23/xyz/main/index.html"
 
-# Finish
-rm -f /root/ins-xray.sh
-rm -f /root/set-br.sh
-rm -f /root/ssh-vpn.sh
+cat> /root/.profile << END
+# ~/.profile: executed by Bourne-compatible login shells.
 
-# Version
+if [ "$BASH" ]; then
+  if [ -f ~/.bashrc ]; then
+    . ~/.bashrc
+  fi
+fi
+
+mesg n || true
+clear
+menu
+END
+chmod 644 /root/.profile
+
+if [ -f "/root/log-install.txt" ]; then
+rm /root/log-install.txt > /dev/null 2>&1
+fi
+if [ -f "/etc/afak.conf" ]; then
+rm /etc/afak.conf > /dev/null 2>&1
+fi
+if [ ! -f "/etc/log-create-user.log" ]; then
+echo "Log All Account " > /etc/log-create-user.log
+fi
+history -c
+serverV=$( curl -sS https://raw.githubusercontent.com/Jesanne87/Modi/main/Version_check_v2 )
+echo $serverV > /opt/.ver
+aureb=$(cat /home/re_otm)
+b=11
+if [ $aureb -gt $b ]
+then
+gg="PM"
+else
+gg="AM"
+fi
+curl -sS ifconfig.me > /etc/myipvps
+
+# Version_check_v2
 echo "1.0" > /home/ver
 clear
 echo ""
-echo -e "${RB}      .-------------------------------------------.${NC}"
-echo -e "${RB}      |${NC}      ${CB}Installation Has Been Completed${NC}      ${RB}|${NC}"
-echo -e "${RB}      '-------------------------------------------'${NC}"
-echo -e "${BB}————————————————————————————————————————————————————————${NC}"
-echo -e "      ${WB}Multiport Websocket Autoscript By NiLphreakzz${NC}"
-echo -e "${BB}————————————————————————————————————————————————————————${NC}"
-echo -e "  ${WB}»»» Protocol Service «««  |  »»» Network Protocol «««${NC}  "
-echo -e "${BB}————————————————————————————————————————————————————————${NC}"
-echo -e "  ${RB}♦️${NC} ${YB}Vmess Websocket${NC}         ${WB}|${NC}  ${YB}- Websocket (CDN) TLS${NC}"
-echo -e "  ${RB}♦️${NC} ${YB}Vless Websocket${NC}         ${WB}|${NC}  ${YB}- Websocket (CDN) NTLS${NC}"
-echo -e "  ${RB}♦️${NC} ${YB}Trojan Websocket${NC}        ${WB}|${NC}  ${YB}- TCP XTLS${NC}"
-echo -e "  ${RB}♦️${NC} ${YB}Trojan TCP XTLS${NC}         ${WB}|${NC}  ${YB}- TCP TLS${NC}"
-echo -e "  ${RB}♦️${NC} ${YB}Trojan TCP${NC}              ${WB}|${NC}"
-echo -e "${BB}————————————————————————————————————————————————————————${NC}"
+echo -e "${RB}      .============================================.${NC}"
+echo -e "${RB}      |${NC}    ${CB}Installation Has Been Completed${NC}         ${RB}|${NC}"
+echo -e "${RB}      '============================================'${NC}"
+echo -e "${CB}————————————————————————————————————————————————————————${NC}"
+echo -e "      ${RB}🚀 ${NC} ${WB}Premium Autoscript By JsPhantom ${NC} ${RB}🚀 ${NC}"
+echo -e "${CB}————————————————————————————————————————————————————————${NC}"
+echo -e "                  ${WB}»»» Info Xray «««${NC}"
+echo -e "${CB}————————————————————————————————————————————————————————${NC}"
+echo -e "  ${GB}✅${NC} ${YB}Xray Vmess Ws Tls : 443${NC}   ${WB}|${NC}  ${GB}✅${NC} ${YB}Websocket (CDN) TLS : 443${NC}"
+echo -e "  ${GB}✅${NC} ${YB}Xray Vless Ws Tls : 443${NC}   ${WB}|${NC}  ${GB}✅${NC} ${YB}Websocket (CDN) NTLS :80${NC}"
+echo -e "  ${GB}✅${NC} ${YB}Xray Trojan Ws Tls : 443${NC}  ${WB}|${NC}  ${GB}✅${NC} ${YB}TCP XTLS :443${NC}"
+echo -e "  ${GB}✅${NC} ${YB}Trojan TCP XTLS : 443${NC}     ${WB}|${NC}  ${GB}✅${NC} ${YB}TCP TLS : 443${NC}"
+echo -e "  ${GB}✅${NC} ${YB}Trojan TCP : 443${NC}          ${WB}|${NC}"
+echo -e "${CB}————————————————————————————————————————————————————————${NC}"
 echo -e "           ${WB}»»» YAML Service Information «««${NC}          "
-echo -e "${BB}————————————————————————————————————————————————————————${NC}"
-echo -e "  ${RB}♦️${NC} ${YB}YAML XRAY VMESS WS${NC}"
-echo -e "  ${RB}♦️${NC} ${YB}YAML XRAY VLESS WS${NC}"
-echo -e "  ${RB}♦️${NC} ${YB}YAML XRAY TROJAN WS${NC}"
-echo -e "  ${RB}♦️${NC} ${YB}YAML XRAY TROJAN XTLS${NC}"
-echo -e "  ${RB}♦️${NC} ${YB}YAML XRAY TROJAN TCP${NC}"
-echo -e "${BB}————————————————————————————————————————————————————————${NC}"
+echo -e "${CB}————————————————————————————————————————————————————————${NC}"
+echo -e "  ${GB}✅${NC} ${YB}YAML XRAY VMESS WS${NC}"
+echo -e "  ${GB}✅${NC} ${YB}YAML XRAY VLESS WS${NC}"
+echo -e "  ${GB}✅${NC} ${YB}YAML XRAY TROJAN WS${NC}"
+echo -e "  ${GB}✅${NC} ${YB}YAML XRAY TROJAN XTLS${NC}"
+echo -e "  ${GB}✅${NC} ${YB}YAML XRAY TROJAN TCP${NC}"
+echo -e "${CB}————————————————————————————————————————————————————————${NC}"
 echo -e "             ${WB}»»» Server Information «««${NC}                 "
-echo -e "${BB}————————————————————————————————————————————————————————${NC}"
-echo -e "  ${RB}♦️${NC} ${YB}Timezone                : Asia/Kuala_Lumpur (GMT +8)${NC}"
-echo -e "  ${RB}♦️${NC} ${YB}Fail2Ban                : [ON]${NC}"
-echo -e "  ${RB}♦️${NC} ${YB}Dflate                  : [ON]${NC}"
-echo -e "  ${RB}♦️${NC} ${YB}IPtables                : [ON]${NC}"
-echo -e "  ${RB}♦️${NC} ${YB}Auto-Reboot             : [ON]${NC}"
-echo -e "  ${RB}♦️${NC} ${YB}IPV6                    : [OFF]${NC}"
+echo -e "${CB}————————————————————————————————————————————————————————${NC}"
+echo -e "  ${MB}♦️${NC} ${YB}Timezone           ${GB}: Asia/Kuala_Lumpur (GMT +8)${NC}"
+echo -e "  ${MB}♦️${NC} ${YB}Fail2Ban           ${GB}: [ON]${NC}"
+echo -e "  ${MB}♦️${NC} ${YB}Dflate             ${GB}: [ON]${NC}"
+echo -e "  ${MB}♦️${NC} ${YB}IPtables           ${GB}: [ON]${NC}"
+echo -e "  ${MB}♦️${NC} ${YB}Auto-Reboot        ${GB}: [ON]${NC}"
+echo -e "  ${MB}♦️${NC} ${YB}IPV6               ${RB}: [OFF]${NC}"
 echo -e ""
-echo -e "  ${RB}♦️${NC} ${YB}Autoreboot On 06.00 GMT +8${NC}"
-echo -e "  ${RB}♦️${NC} ${YB}Backup & Restore VPS Data${NC}"
-echo -e "  ${RB}♦️${NC} ${YB}Automatic Delete Expired Account${NC}"
-echo -e "  ${RB}♦️${NC} ${YB}Bandwith Monitor${NC}"
-echo -e "  ${RB}♦️${NC} ${YB}RAM & CPU Monitor${NC}"
-echo -e "  ${RB}♦️${NC} ${YB}Check Login User${NC}"
-echo -e "  ${RB}♦️${NC} ${YB}Check Created Config${NC}"
-echo -e "  ${RB}♦️${NC} ${YB}Automatic Clear Log${NC}"
-echo -e "  ${RB}♦️${NC} ${YB}Media Checker${NC}"
-echo -e "  ${RB}♦️${NC} ${YB}DNS Changer${NC}"
-echo -e "${BB}————————————————————————————————————————————————————————${NC}"
-echo -e "              ${WB}»»» Network Port Service «««${NC}             "
-echo -e "${BB}————————————————————————————————————————————————————————${NC}"
-echo -e "  ${RB}♦️${NC} ${YB}HTTP                    : 80, 8080, 8880${NC}"
-echo -e "  ${RB}♦️${NC} ${YB}HTTPS                   : 443${NC}"
-echo -e "${BB}————————————————————————————————————————————————————————${NC}"
+echo -e "  ${GB}✅${NC} ${YB}Autoreboot On 06.00 GMT +8${NC}"
+echo -e "  ${GB}✅${NC} ${YB}Backup & Restore VPS Data${NC}"
+echo -e "  ${GB}✅${NC} ${YB}Automatic Delete Expired Account${NC}"
+echo -e "  ${GB}✅${NC} ${YB}Bandwith Monitor${NC}"
+echo -e "  ${GB}✅${NC} ${YB}Check Login User${NC}"
+echo -e "  ${GB}✅${NC} ${YB}Check Created Config${NC}"
+echo -e "  ${GB}✅${NC} ${YB}Automatic Clear Log${NC}"
+echo -e "  ${GB}✅${NC} ${YB}Media Checker${NC}"
+echo -e "  ${GB}✅${NC} ${YB}DNS Changer${NC}"
+echo -e "${CB}————————————————————————————————————————————————————————${NC}"
+echo -e "           ${WB}»»» Autoscript By JsPhantom «««${NC}             "
+echo -e "${CB}————————————————————————————————————————————————————————${NC}"
 echo ""
-secs_to_human "$(($(date +%s) - ${start}))"
-echo ""
-rm -r setup.sh
-echo ""
-echo ""
-read -p "$( echo -e "Press ${orange}[ ${NC}${green}Enter${NC} ${CYAN}]${NC} For Reboot") "
+echo -e "   ${tyblue}Your VPS Will Be Automatical Reboot In 10 seconds${NC}"
+rm /root/cf.sh >/dev/null 2>&1
+rm /root/setup.sh >/dev/null 2>&1
+rm /root/insshws.sh 
+rm /root/update.sh
+sleep 10
 reboot
