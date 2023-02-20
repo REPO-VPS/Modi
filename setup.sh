@@ -12,6 +12,7 @@ GB='\e[32;1m'
 YB='\e[33;1m'
 BB='\e[34;1m'
 MB='\e[35;1m'
+
 CB='\e[35;1m'
 WB='\e[37;1m'
 red='\e[1;31m'
@@ -24,6 +25,7 @@ dateFromServer=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Dat
 biji=`date +"%Y-%m-%d" -d "$dateFromServer"`
 #########################
 clear
+
 red='\e[1;31m'
 green='\e[0;32m'
 yell='\e[1;33m'
@@ -35,6 +37,7 @@ tyblue() { echo -e "\\033[36;1m${*}\\033[0m"; }
 yellow() { echo -e "\\033[33;1m${*}\\033[0m"; }
 green() { echo -e "\\033[32;1m${*}\\033[0m"; }
 red() { echo -e "\\033[31;1m${*}\\033[0m"; }
+
 cek=$( curl -sS https://raw.githubusercontent.com/annelyah23/IP/main/access | awk '{print $2}'  | grep $MYIP )
 Name=$(curl -sS https://raw.githubusercontent.com/annelyah23/IP/main/access | grep $MYIP | awk '{print $4}')
 if [[ $cek = $MYIP ]]; then
@@ -148,10 +151,12 @@ if [ -f "/root/domain" ]; then
 echo "Script Already Installed"
 exit 0
 fi
+
 echo ""
 wget -q https://raw.githubusercontent.com/annelyah23/snip/main/dependencies.sh;chmod +x dependencies.sh;./dependencies.sh
 rm dependencies.sh
 clear
+
 mkdir -p /etc/JsPhantom
 mkdir -p /etc/JsPhantom/theme
 mkdir /var/lib/premium-script;
@@ -180,8 +185,8 @@ exit 1
 fi
 echo -e "${GREEN}Done!${NC}"
 sleep 2
-echo ""
 
+echo ""
 clear
 echo "IP=$host" >> /var/lib/premium-script/ipvps.conf
 echo "IP=$host" >> /var/lib/crot-script/ipvps.conf
