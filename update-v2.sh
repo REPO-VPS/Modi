@@ -6,7 +6,7 @@ purple='\e[0;35m'
 orange='\e[0;33m'
 NC='\e[0m'
 # // Exporting URL Host
-export Server_URL="raw.githubusercontent.com/annelyah23/xyz/main"
+export Server_URL="raw.githubusercontent.com/Jesanne87/Modi/main"
 clear
 if [[ -e /usr/local/bin/xray ]]; then
 echo ""
@@ -36,13 +36,13 @@ wget -O nf "https://${Server_URL}/media.sh" && chmod +x nf
 wget -O ins-helium "https://${Server_URL}/ins-helium.sh" && chmod +x ins-helium
 wget -O menu "https://${Server_URL}/menu.sh" && chmod +x menu
 wget -O limit "https://${Server_URL}/limit-speed.sh" && chmod +x limit
-wget -O status "https://raw.githubusercontent.com/annelyah23/xyz/main/status.sh" && chmod +x status
-wget -O add-tr "https://raw.githubusercontent.com/annelyah23/xyz/main/add-tr.sh" && chmod +x add-tr
-wget -O add-vless "https://raw.githubusercontent.com/annelyah23/xyz/main/add-vless.sh" && chmod +x add-vless
-wget -O add-ws "https://raw.githubusercontent.com/annelyah23/xyz/main/add-ws.sh" && chmod +x add-ws
-wget -O user-tr "https://raw.githubusercontent.com/annelyah23/xyz/main/user-tr.sh" && chmod +x user-tr
-wget -O user-vless "https://raw.githubusercontent.com/annelyah23/xyz/main/user-vless.sh" && chmod +x user-vless
-wget -O menu-theme "https://raw.githubusercontent.com/annelyah23/snip/main/update/menu-theme.sh" && chmod +x menu-theme
+wget -O status "https://raw.githubusercontent.com/Jesanne87/Modi/main/status.sh" && chmod +x status
+wget -O add-tr "https://raw.githubusercontent.com/Jesanne87/Modi/main/add-tr.sh" && chmod +x add-tr
+wget -O add-vless "https://raw.githubusercontent.com/Jesanne87/Modi/main/add-vless.sh" && chmod +x add-vless
+wget -O add-ws "https://raw.githubusercontent.com/Jesanne87/Modi/main/add-ws.sh" && chmod +x add-ws
+wget -O user-tr "https://raw.githubusercontent.com/Jesanne87/Modi/main/user-tr.sh" && chmod +x user-tr
+wget -O user-vless "https://raw.githubusercontent.com/Jesanne87/Modi/main/user-vless.sh" && chmod +x user-vless
+wget -O menu-theme "https://raw.githubusercontent.com/Jesanne87/Modi/main/menu-theme.sh" && chmod +x menu-theme
 
 echo ""
 echo -e "[${green}INFO${NC}] Successfully Install New Update File !"
@@ -80,13 +80,13 @@ wget -O nf "https://${Server_URL}/media.sh" && chmod +x nf
 wget -O ins-helium "https://${Server_URL}/ins-helium.sh" && chmod +x ins-helium
 wget -O menu "https://${Server_URL}/menu.sh" && chmod +x menu
 wget -O limit "https://${Server_URL}/limit-speed.sh" && chmod +x limit
-wget -O status "https://raw.githubusercontent.com/annelyah23/xyz/main/status.sh" && chmod +x status
-wget -O add-tr "https://raw.githubusercontent.com/annelyah23/xyz/main/add-tr.sh" && chmod +x add-tr
-wget -O add-vless "https://raw.githubusercontent.com/annelyah23/xyz/main/add-vless.sh" && chmod +x add-vless
-wget -O add-ws "https://raw.githubusercontent.com/annelyah23/xyz/main/add-ws.sh" && chmod +x add-ws
-wget -O user-tr "https://raw.githubusercontent.com/annelyah23/xyz/main/user-tr.sh" && chmod +x user-tr
-wget -O user-vless "https://raw.githubusercontent.com/annelyah23/xyz/main//user-vless.sh" && chmod +x user-vless
-wget -O menu-theme "https://raw.githubusercontent.com/annelyah23/snip/main/update/menu-theme.sh" && chmod +x menu-theme
+wget -O status "https://raw.githubusercontent.com/Jesanne87/Modi/main/status.sh" && chmod +x status
+wget -O add-tr "https://raw.githubusercontent.com/Jesanne87/Modi/main/add-tr.sh" && chmod +x add-tr
+wget -O add-vless "https://raw.githubusercontent.com/Jesanne87/Modi/main/add-vless.sh" && chmod +x add-vless
+wget -O add-ws "https://raw.githubusercontent.com/Jesanne87/Modi/main/add-ws.sh" && chmod +x add-ws
+wget -O user-tr "https://raw.githubusercontent.com/Jesanne87/Modi/main/user-tr.sh" && chmod +x user-tr
+wget -O user-vless "https://raw.githubusercontent.com/Jesanne87/Modi/main//user-vless.sh" && chmod +x user-vless
+wget -O menu-theme "https://raw.githubusercontent.com/Jesanne87/Modi/main/menu-theme.sh" && chmod +x menu-theme
 echo ""
 echo -e "[${green}INFO${NC}] Successfully Install New Update File !"
 sleep 1
