@@ -126,7 +126,6 @@ if [ -f "/root/domain" ]; then
 echo "Script Already Installed"
 exit 0
 fi
-
 mkdir -p /etc/JsPhantom
 mkdir -p /etc/JsPhantom/theme
 mkdir /var/lib/premium-script;
@@ -155,6 +154,8 @@ exit 1
 fi
 echo -e "${GREEN}Done!${NC}"
 sleep 2
+echo ""
+
 clear
 echo "IP=$host" >> /var/lib/premium-script/ipvps.conf
 echo "IP=$host" >> /var/lib/crot-script/ipvps.conf
