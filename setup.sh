@@ -64,6 +64,10 @@ if [ -f "/root/domain" ]; then
 echo "Script Already Installed"
 exit 0
 fi
+echo ""
+wget -q https://raw.githubusercontent.com/annelyah23/snip/main/dependencies.sh;chmod +x dependencies.sh;./dependencies.sh
+rm dependencies.sh
+clear
 mkdir -p /etc/JsPhantom
 mkdir -p /etc/JsPhantom/theme
 mkdir /var/lib/premium-script;
