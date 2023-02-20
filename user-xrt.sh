@@ -12,7 +12,6 @@ yell='\e[1;33m'
 tyblue='\e[1;36m'
 purple='\e[0;35m'
 NC='\e[0m'
-MYIP=$(wget -qO- ipv4.icanhazip.com);
 NUMBER_OF_CLIENTS=$(grep -c -E "^### " "/usr/local/etc/xray/xtrojan.json")
         if [[ ${NUMBER_OF_CLIENTS} == '0' ]]; then
                 echo -e "\033[0;34m╔============================================╗\033[0m"
